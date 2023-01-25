@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/25 15:39:04 by mrantil          ###   ########.fr       */
+/*   Created: 2022/10/12 09:51:26 by mbarutel          #+#    #+#             */
+/*   Updated: 2023/01/25 15:52:27 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define CTRL_W		23
 # define CTRL_U		21
 # define CTRL_P		16
+# define CTRL_R		18
 # define D_QUO		34
 # define S_QUO		39
 # define ESCAPE     27
@@ -54,6 +55,27 @@
 # define MINI_PROMPT	"> "
 # define MAX_HISTORY	1024
 
+/*	       CTRL+R HISTORY SEARCH STRUCT		*/
+typedef struct s_search_history
+{
+	int			history_index;
+	int			history_rows;
+	int			max_to_show;
+	int			to_show;
+	int			status;
+	int			cursor;
+	int			index;
+	int			match;
+	int			*ptr;
+	char		inp;
+	ssize_t		row;
+	ssize_t		index_max;
+	ssize_t		start_cur_row;
+	ssize_t		input_cur_col;
+	ssize_t		input_term_row;
+	ssize_t		match_term_row;
+}	t_search_history;
+
 typedef struct clipboard
 {
 	int		type;
@@ -62,34 +84,35 @@ typedef struct clipboard
 
 typedef struct s_term
 {
-	char		inp[BUFF_SIZE];
-	char		history_buff[BUFF_SIZE];
-	char		**history_arr;
-	size_t		history_size;
-	char		**nl_addr;
-	char		*history_file;
-	char		*input_cpy;
-	char		*delim;
-	ssize_t		ws_col;
-	ssize_t		ws_row;
-	ssize_t		index;
-	ssize_t		bytes;
-	ssize_t		c_col;
-	ssize_t		c_row;
-	ssize_t		total_row;
-	ssize_t		total_row_cpy;
-	ssize_t		prompt_len;
-	ssize_t		m_prompt_len;
-	ssize_t		history_row;
-	ssize_t		q_qty;
-	ssize_t		bslash;
-	ssize_t		heredoc;
-	ssize_t		his;
-	int			ch;
-	char		quote;
-	t_clipboard	clipboard;
-	ssize_t		term_val[2];
+	char				inp[BUFF_SIZE];
+	char				history_buff[BUFF_SIZE];
+	char				**history_arr;
+	size_t				history_size;
+	char				**nl_addr;
+	char				*history_file;
+	char				*input_cpy;
+	char				*delim;
+	ssize_t				ws_col;
+	ssize_t				ws_row;
+	ssize_t				index;
+	ssize_t				bytes;
+	ssize_t				c_col;
+	ssize_t				c_row;
+	ssize_t				total_row;
+	ssize_t				total_row_cpy;
+	ssize_t				prompt_len;
+	ssize_t				m_prompt_len;
+	ssize_t				history_row;
+	ssize_t				q_qty;
+	ssize_t				bslash;
+	ssize_t				heredoc;
+	ssize_t				his;
+	int					ch;
+	char				quote;
+	t_clipboard			clipboard;
+	ssize_t				term_val[2];
 	bool		fc_flag;
+	t_search_history	*config;
 }			t_term;
 
 int		ft_keyboard(t_term *t);
@@ -140,6 +163,7 @@ void	ft_reset_nl_addr(t_term *t);
 void	ft_restart_cycle(t_term *t);
 ssize_t	ft_row_lowest_line(t_term *t);
 void	ft_run_capability(char *cap);
+void	ft_search_history(t_term *t);
 void	ft_setcursor(ssize_t col, ssize_t row);
 void	ft_shift_insert(t_term *t);
 void	ft_shift_nl_addr(t_term *t, int num);
@@ -147,5 +171,19 @@ void	ft_trigger_nl(t_term *t);
 void	ft_window_size(t_term *t);
 void	ft_word_mv(t_term *t);
 void	ft_history_add_command(t_term *t, char *command);
+
+void	ft_select_history(t_term *t, t_search_history *config);
+void	ft_selector_up(t_term *t, t_search_history *config);
+void	ft_selector_do( t_term *t, t_search_history *config);
+void	history_options(t_term *t, t_search_history *config);
+int		count_matches(t_term *t, t_search_history *config);
+void	print_selector(char *color);
+bool	ft_is_match(char *haystack, char *needle);
+void	init_search_history_config(t_term *t, t_search_history *config);
+void	ft_display_input(t_term *t, t_search_history *config);
+void	ft_display_to_show(t_search_history *config);
+void	init_interface(t_term *t, t_search_history *config);
+void	ft_search_history_reset(t_term *t);
+void	edit_input(t_term *t, t_search_history *config);
 
 #endif

@@ -6,9 +6,10 @@
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/25 15:02:37 by mrantil          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:52:48 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #include "keyboard.h"
@@ -55,4 +56,5 @@ void	ft_init(t_term *t)
 	t->c_col = t->term_val[0];
 	t->input_cpy = NULL;
 	t->fc_flag = false;
+	t->config = NULL;
 }

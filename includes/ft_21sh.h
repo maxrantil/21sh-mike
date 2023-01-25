@@ -6,9 +6,10 @@
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/25 15:39:28 by mrantil          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:51:49 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #ifndef FT_21SH_H
@@ -346,4 +347,5 @@ char			**ft_var_get(t_session *sesh, char *key, int *count);
 /*				PARAM_FORM					*/
 int				param_format(t_session *sesh, char **cmd);
 
+void			search_history_sigs(int num);
 #endif
