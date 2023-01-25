@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: Invalid date        by                   #+#    #+#              #
-#    Updated: 2023/01/25 15:51:22 by mrantil          ###   ########.fr        #
+#    Created: 2022/09/12 06:01:22 by mbarutel          #+#    #+#              #
+#    Updated: 2023/01/25 15:59:33 by mrantil          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,6 +86,7 @@ UTILITIES		=	utilities/
 FC				= 	fc/
 INTERN_VARS		=	intern_variables/
 PARAM_FORM		=	parameter_formatting/
+FT_TEST			=	ft_test/
 
 SOURCE_COUNT = $(words $(FILES))
 
@@ -246,6 +247,9 @@ FILES			= $(KEYBOARD)ft_add_nl_last_row \
 				$(INTERN_VARS)add_var \
 				$(INTERN_VARS)ft_var_get \
 				$(PARAM_FORM)parameter_format \
+				$(FT_TEST)ft_test \
+				$(FT_TEST)ft_test_is_unary \
+				$(FT_TEST)ft_test_is_binary
 
 H_PATHS 	= 	$(addsuffix .h, $(addprefix $(INCLUDES)/, $(H_FILES)))
 O_PATHS		=	$(addsuffix .o, $(addprefix $(OBJECTS)/,$(FILES)))
@@ -282,6 +286,7 @@ $(OBJECTS):
 	@mkdir -p $(OBJECTS)/$(FC)
 	@mkdir -p $(OBJECTS)/$(INTERN_VARS)
 	@mkdir -p $(OBJECTS)/$(PARAM_FORM)
+	@mkdir -p $(OBJECTS)/$(FT_TEST)
 	@printf "$(GREEN)_________________________________________________________________\n$(RESET)"
 	@printf "$(NAME): $(GREEN)$(OBJECTS) directory was created.$(RESET)\n\n\n"
 

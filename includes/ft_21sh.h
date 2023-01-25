@@ -6,9 +6,10 @@
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/25 15:51:49 by mrantil          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:01:02 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 
@@ -60,6 +61,8 @@
 /* For fc builtin */
 # define FC_FLAGS "srnl"
 # define FC_LEN 18
+
+# define PATH_MAX 2048
 
 typedef union u_treenode	t_treenode;
 
@@ -312,8 +315,37 @@ int				ft_set(t_session *sesh, char ***cmd);
 void			ft_exit(t_session *sesh, int status);
 int				ft_export(t_session *sesh, char **cmd);
 int				ft_unset(t_session *sesh, char **cmd);
+int				ft_test(t_session *sesh, char **cmd);
+int				is_binary(char *str);
+int				is_unary(char *str);
 
-/*			    BUILTIN UTILITIES			*/
+/*				BUILTIN TEST				*/
+int				ft_test_z(char **arg);
+int				ft_test_x(char **arg);
+int				ft_test_w(char **arg);
+int				ft_test_u(char **arg);
+int				ft_test_s(char **arg);
+int				ft_test_capital_s(char **arg);
+int				ft_test_r(char **arg);
+int				ft_test_p(char **arg);
+int				ft_test_l(char **arg);
+int				ft_test_capital_l(char **arg);
+int				ft_test_g(char **arg);
+int				ft_test_f(char **arg);
+int				ft_test_e(char **arg);
+int				ft_test_d(char **arg);
+int				ft_test_c(char **arg);
+int				ft_test_equal(char **arg);
+int				ft_test_le(char **arg);
+int				ft_test_lt(char **arg);
+int				ft_test_ge(char **arg);
+int				ft_test_ne(char **arg);
+int				ft_test_eq(char **arg);
+int				ft_test_not_equal(char **arg);
+int				is_unary(char *str);
+int				is_binary(char *str);
+
+/*				BUILTIN UTILITIES			*/
 int				ft_env_temp(t_session *sesh, char **cmd, int i);
 void			ft_env_remove(t_session *sesh, char *env_to_clean);
 int				ft_env_append(t_session *sesh, char **arg);
