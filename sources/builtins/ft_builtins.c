@@ -6,9 +6,10 @@
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/25 16:04:18 by mrantil          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:10:38 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 
@@ -50,6 +51,8 @@ int	ft_builtins(t_session *sesh, char ***cmd)
 			return (ft_fc(sesh, cmd));
 		else if (!ft_strcmp(**cmd, "test"))
 			return(ft_test(sesh, *cmd));
+		else if (!ft_strcmp(**cmd, "hash"))
+			return (ft_hash(sesh, *cmd));
 		else if (!ft_strcmp(**cmd, "exit"))
 			ft_exit(sesh, 0);
 	}

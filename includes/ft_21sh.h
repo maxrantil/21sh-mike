@@ -6,9 +6,10 @@
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/25 16:01:02 by mrantil          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:10:07 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 
@@ -50,6 +51,9 @@
 
 /* limit for filedescriptors */
 # define SH_FD_MAX 255
+
+/* Hash Table */
+# define HASH_SIZE 25
 
 /* Build tree, redir types */
 # define RE_IN_ONE 1
@@ -164,6 +168,15 @@ union u_treenode
 	t_ampersand	ampersand;
 };
 
+/*					HASH					*/
+typedef struct s_hash
+{
+	char			*program;
+	char			*path;
+	int				hits;
+	struct s_hash	*next;
+}					t_hash;
+
 /*				SESSION STRUCT				*/
 typedef struct session
 {
@@ -172,6 +185,7 @@ typedef struct session
 	t_term			term[1];
 	char			**env;
 	char			**intr_vars;
+	t_hash			**ht;
 	t_token			*tokens;
 	int				exit_stat;
 	char			*terminal;
@@ -284,7 +298,7 @@ size_t			ft_bslash_check(char *buff, ssize_t pos);
 /*					EXECUTE_TREE			*/
 void			exec_tree(t_treenode *head, char ***environ_cp, char *terminal, \
 				t_session *sesh);
-void			execute_bin(char ***args, char ***environ_cp, t_session *sesh);
+void			exec_cmd(char **args, char ***environ_cp, t_session *sesh);
 void			exec_pipe(t_pipenode *pipenode, char ***environ_cp, \
 				char *terminal, t_session *sesh);
 void			exec_redir(t_redir *node, char ***environ_cp, char *terminal, \
@@ -380,4 +394,13 @@ char			**ft_var_get(t_session *sesh, char *key, int *count);
 int				param_format(t_session *sesh, char **cmd);
 
 void			search_history_sigs(int num);
+/*			  		 HASH					*/
+int				ft_hash(t_session *sesh, char **cmd);
+void			hash_init(t_session *sesh);
+void			hash_print(t_hash **ht);
+size_t			hash_function(char *program);
+void			hash_init_struct(t_session *sesh, char *str, int hits);
+char			*hash_check(t_session *sesh, char *program, int *hash);
+void			hash_free(t_hash **ht);
+
 #endif

@@ -6,7 +6,7 @@
 #    By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/12 06:01:22 by mbarutel          #+#    #+#              #
-#    Updated: 2023/01/25 15:59:33 by mrantil          ###   ########.fr        #
+#    Updated: 2023/01/25 16:08:27 by mrantil          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,23 +44,21 @@ MAKEFLAGS			+= --no-print-directory
 
 NAME				=	21sh
 CC					=	gcc
-CFLAGS 				= 	-Wall -Wextra -Werror
+TERMCAP				=	-ltermcap
+CFLAGS 				= 	-Wall -Wextra
 CFLAGS				+=	-Wunreachable-code -Wtype-limits
 CFLAGS				+=	-Wpedantic
 # CFLAGS				+=	-Wconversion
 CFLAGS				+=	-O3
 
 LEAK_CHECK			= -g
-#LEAK_CHECK		+=	-fsanitize=address
+#LEAK_CHECK			+=	-fsanitize=address
 
 UNAME				= $(shell uname)
 ifeq ($(UNAME), Darwin)
-TERMCAP				=	-ltermcap
-CFLAGS 			+= -Werror
+CFLAGS				+= 	-Werror
 endif
 ifeq ($(UNAME), Linux)
-TERMCAP				=	-ltermcap
-CFLAGS				+= 	-Werror
 TERMCAP				=	-lncurses
 endif
 
@@ -87,6 +85,7 @@ FC				= 	fc/
 INTERN_VARS		=	intern_variables/
 PARAM_FORM		=	parameter_formatting/
 FT_TEST			=	ft_test/
+HASH			= 	hash/
 
 SOURCE_COUNT = $(words $(FILES))
 
@@ -250,6 +249,13 @@ FILES			= $(KEYBOARD)ft_add_nl_last_row \
 				$(FT_TEST)ft_test \
 				$(FT_TEST)ft_test_is_unary \
 				$(FT_TEST)ft_test_is_binary
+				$(HASH)ft_hash \
+				$(HASH)hash_init \
+				$(HASH)hash_print \
+				$(HASH)hash_function \
+				$(HASH)hash_init_struct \
+				$(HASH)hash_check \
+				$(HASH)hash_free \
 
 H_PATHS 	= 	$(addsuffix .h, $(addprefix $(INCLUDES)/, $(H_FILES)))
 O_PATHS		=	$(addsuffix .o, $(addprefix $(OBJECTS)/,$(FILES)))
@@ -287,6 +293,7 @@ $(OBJECTS):
 	@mkdir -p $(OBJECTS)/$(INTERN_VARS)
 	@mkdir -p $(OBJECTS)/$(PARAM_FORM)
 	@mkdir -p $(OBJECTS)/$(FT_TEST)
+	@mkdir -p $(OBJECTS)/$(HASH)
 	@printf "$(GREEN)_________________________________________________________________\n$(RESET)"
 	@printf "$(NAME): $(GREEN)$(OBJECTS) directory was created.$(RESET)\n\n\n"
 

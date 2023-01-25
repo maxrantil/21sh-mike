@@ -6,7 +6,7 @@
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 17:50:32 by jniemine          #+#    #+#             */
-/*   Updated: 2023/01/23 15:48:03 by mrantil          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:06:38 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static int validate_input(t_session *sesh, char **cmd, int punctuation)
 		ft_err_print("test", cmd[1 + punctuation], "unary operator expected", 2);
 	else
 		return (0);
+	(void)sesh; // fix return value later
 	return (1);
 }
 

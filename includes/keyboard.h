@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/12 09:51:26 by mbarutel          #+#    #+#             */
-/*   Updated: 2023/01/25 15:52:27 by mrantil          ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/01/25 16:10:19 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 
@@ -20,6 +21,14 @@
 # include <term.h>
 # include <fcntl.h>
 # include <sys/ioctl.h>
+
+# if __linux__
+#  include <term.h>
+#  include <curses.h>
+#  include <signal.h>
+#  include <limits.h>
+#  include <ctype.h>
+# endif
 
 # define ENTER      10
 # define CTRL_C		3

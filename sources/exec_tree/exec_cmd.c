@@ -6,7 +6,7 @@
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 18:12:53 by jakken            #+#    #+#             */
-/*   Updated: 2023/01/25 10:21:48 by mrantil          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:14:54 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,20 +83,9 @@ static void	print_args(char **args)
 
 void	execute_bin(char ***args, char ***environ_cp, t_session *sesh)
 {
-	char	*cmd;
-	int		access;
 	int		status;
 
 	status = 0;
-	if (!(*args)[0])
-		return ;
-	if (sesh->term->fc_flag == true)
-		print_args(*args);
-	if (!ft_builtins(sesh, &(*args)))
-		return ;
-	if (!check_if_user_exe((*args)[0], &cmd))
-		cmd = search_bin((*args)[0], *environ_cp);
-	access = check_access(cmd, (*args), sesh);
 	if (access && fork_wrap() == 0)
 	{
 		if (!cmd || execve(cmd, (*args), *environ_cp) < 0)
@@ -106,7 +95,31 @@ void	execute_bin(char ***args, char ***environ_cp, t_session *sesh)
 	wait(&status);
 	if (status & 0177)
 		ft_putchar('\n');
+	return (status);
+}
+
+void	exec_cmd(char **args, char ***environ_cp, t_session *sesh)
+{
+	char	*cmd;
+	int		access;
+	int		status;
+	int		hash;
+
+	if (!args[0])
+		return ;
+	if (!ft_builtins(sesh, &args))
+		return ;
+	hash = 0;
+	cmd = hash_check(sesh, args[0], &hash);
+	if (!hash && !check_if_user_exe(args[0], &cmd))
+		cmd = search_bin(args[0], *environ_cp);
+	access = check_access(cmd, args, sesh);
+	status = ft_execve(cmd, args, access, environ_cp);
 	if (access)
+	{
 		sesh->exit_stat = status >> 8;
+		if (!hash)
+			hash_init_struct(sesh, cmd, 1);
+	}
 	ft_memdel((void **)&cmd);
 }
