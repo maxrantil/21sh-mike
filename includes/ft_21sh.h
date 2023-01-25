@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_21sh.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jniemine <jniemine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 09:30:27 by mbarutel          #+#    #+#             */
-/*   Updated: 2023/01/19 12:58:08 by jniemine         ###   ########.fr       */
+/*   Updated: 2023/01/25 14:54:26 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 # include "keyboard.h"
 # include "ft_printf.h"
 # include <sys/stat.h>
+
+# if __linux__
+#  include <sys/types.h>
+#  include <sys/wait.h>
+# endif
 
 /* Do not use zero */
 # define PIPE 1
@@ -41,7 +46,21 @@
 # define RE_OUT_ONE 4
 # define RE_OUT_TWO 5
 
+/* For fc builtin */
+# define FC_FLAGS "srnl"
+# define FC_LEN 18
+
 typedef union u_treenode	t_treenode;
+
+/*					FC STRUCT			*/
+typedef struct s_fc
+{
+	char	**filename;
+	char	*ret_cmd;
+	int		start;
+	int		end;
+	int		e;
+}	t_fc;
 
 /*					TOKEN STRUCT			*/
 typedef struct s_token
@@ -198,6 +217,7 @@ int				test_if_file(char *file);
 void			ft_expansion(t_session *sesh, char **cmd);
 char			*ft_expansion_dollar(t_session *sesh, char *str);
 char			*ft_expansion_tilde(t_session *sesh, char *str);
+char			*ft_expansion_excla(char *str, int i);
 void			ft_quote_blash_removal(char *buff);
 
 /*					UTILITIES				*/
@@ -211,7 +231,7 @@ size_t			ft_bslash_check(char *buff, ssize_t pos);
 /*					EXECUTE_TREE			*/
 void			exec_tree(t_treenode *head, char ***environ_cp, char *terminal, \
 				t_session *sesh);
-void			execute_bin(char **args, char ***environ_cp, t_session *sesh);
+void			execute_bin(char ***args, char ***environ_cp, t_session *sesh);
 void			exec_pipe(t_pipenode *pipenode, char ***environ_cp, \
 				char *terminal, t_session *sesh);
 void			exec_redir(t_redir *node, char ***environ_cp, char *terminal, \
@@ -251,13 +271,20 @@ int				ft_env_replace(t_session *sesh, char *envn, char **tmp_env);
 void			ft_dir_change(t_session *sesh);
 
 /*			  		 HISTORY				*/
-int				ft_history(t_term *t);
+int				ft_history(t_term *t, char **cmd);
 void			ft_history_get(t_term *t);
-char			*ft_history_file_get(void);
+int				ft_history_expantion(t_term *t);
 void			ft_history_write_to_file(t_term *t);
 
 /*			  		 SIGNALS				*/
 void			set_signal_fork(int num);
 void			sig_session_handler(int num);
 void			sigwinch_inchild_handler(int num);
+
+/*			  		 FC						*/
+int				ft_fc(t_session *sesh, char ***cmd);
+int				fc_check_flags(t_session *sesh, char ***cmd);
+void			fc_overwrite_fc_cmd_with_prev_cmd(t_session *sesh, char ***cmd, int y);
+int				fc_print_error(int check);
+
 #endif

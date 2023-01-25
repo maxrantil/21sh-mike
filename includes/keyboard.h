@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   keyboard.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarutel <mbarutel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/12 09:51:26 by mbarutel          #+#    #+#             */
-/*   Updated: 2023/01/17 12:53:48 by mbarutel         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/01/25 14:53:45 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef KEYBOARD_H
 # define KEYBOARD_H
@@ -18,6 +19,13 @@
 # include <term.h>
 # include <fcntl.h>
 # include <sys/ioctl.h>
+
+# if __linux__
+#  include <curses.h>
+#  include <signal.h>
+#  include <limits.h>
+#  include <ctype.h>
+# endif
 
 # define ENTER      10
 # define CTRL_C		3
@@ -87,6 +95,7 @@ typedef struct s_term
 	char		quote;
 	t_clipboard	clipboard;
 	ssize_t		term_val[2];
+	bool		fc_flag;
 }			t_term;
 
 int		ft_keyboard(t_term *t);

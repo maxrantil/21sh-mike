@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jniemine <jniemine@student.42.fr>          +#+  +:+       +#+         #
+#    By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/12 06:01:22 by mbarutel          #+#    #+#              #
-#    Updated: 2023/01/19 12:27:04 by jniemine         ###   ########.fr        #
+#    Updated: 2023/01/25 14:53:14 by mrantil          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,6 +79,7 @@ OBJECTS 		= 	objects
 TERMIOS			= 	termios/
 TOKENIZER		=	tokenizer/
 UTILITIES		=	utilities/
+FC				= 	fc/
 
 SOURCE_COUNT = $(words $(FILES))
 
@@ -185,9 +186,11 @@ FILES			= $(KEYBOARD)ft_add_nl_last_row \
 				$(EXPANSION)ft_expansion_utils \
 				$(EXPANSION)ft_expansion_dollar \
 				$(EXPANSION)ft_expansion_tilde \
+				$(EXPANSION)ft_expansion_excla \
 				$(UTILITIES)ft_env_get \
 				$(UTILITIES)ft_err_print \
 				$(UTILITIES)ft_bslash_check \
+				$(UTILITIES)free_node \
 				$(BUILTIN)ft_builtins \
 				$(BUILTIN)ft_cd \
 				$(BUILTIN)ft_echo \
@@ -209,9 +212,13 @@ FILES			= $(KEYBOARD)ft_add_nl_last_row \
 				$(INITIALIZE)ft_init_window_size \
 				$(INITIALIZE)ft_session_init \
 				$(HISTORY)ft_history \
-				$(HISTORY)ft_history_file_get \
 				$(HISTORY)ft_history_get \
+				$(HISTORY)ft_history_expansion \
 				$(HISTORY)ft_history_write_to_file \
+				$(FC)ft_fc \
+				$(FC)fc_print_error \
+				$(FC)fc_check_flags \
+				$(FC)fc_overwrite_fc_cmd_with_prev_cmd \
 
 H_PATHS 	= 	$(addsuffix .h, $(addprefix $(INCLUDES)/, $(H_FILES)))
 O_PATHS		=	$(addsuffix .o, $(addprefix $(OBJECTS)/,$(FILES)))
@@ -245,6 +252,7 @@ $(OBJECTS):
 	@mkdir -p $(OBJECTS)/$(TERMIOS)
 	@mkdir -p $(OBJECTS)/$(HISTORY)
 	@mkdir -p $(OBJECTS)/$(SIGNALS)
+	@mkdir -p $(OBJECTS)/$(FC)
 	@printf "$(GREEN)_________________________________________________________________\n$(RESET)"
 	@printf "$(NAME): $(GREEN)$(OBJECTS) directory was created.$(RESET)\n\n\n"
 

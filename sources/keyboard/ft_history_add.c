@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_history_add.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbarutel <mbarutel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/09 14:22:24 by mbarutel          #+#    #+#             */
-/*   Updated: 2023/01/13 12:37:23 by mbarutel         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/01/25 15:01:28 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "keyboard.h"
 
@@ -24,7 +25,7 @@ static void	add_to_capped_history(t_term *t, char *command)
 		ft_putendl_fd("21sh: malloc error, add_to_capped_history()", 2);
 		exit(1);
 	}
-	i = 511;
+	i = MAX_HISTORY / 2;
 	j = 0;
 	while (t->history_arr[++i])
 		temp[j++] = ft_strdup(t->history_arr[i]);
@@ -62,7 +63,7 @@ void	ft_history_add_command(t_term *t, char *command)
 	int	i;
 
 	i = 0;
-	if (t->history_size <= MAX_HISTORY)
+	if (t->history_size < MAX_HISTORY)
 	{
 		while (command[i] && ft_isspace(command[i]))
 			i++;

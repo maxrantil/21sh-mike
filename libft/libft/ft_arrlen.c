@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_history_file_get.c                              :+:      :+:    :+:   */
+/*   ft_arrlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbarutel <mbarutel@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/21 14:56:28 by mrantil           #+#    #+#             */
-/*   Updated: 2022/12/25 19:10:53 by mbarutel         ###   ########.fr       */
+/*   Created: 2022/11/22 16:52:56 by mbarutel          #+#    #+#             */
+/*   Updated: 2022/11/22 19:42:09 by mbarutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_21sh.h"
+#include "libft.h"
 
-/*
- * It returns the path to the history file
- *
- * @return The path to the history file.
+/**
+ * This function returns the length of an array of strings
+ * 
+ * @param array The array to get the length of.
+ * 
+ * @return The length of the array.
  */
-char	*ft_history_file_get(void)
+size_t	ft_arrlen(char **array)
 {
-	char	cwd[1024];
-	char	*home;
-	char	*file;
+	size_t	len;
 
-	home = getenv("HOME");
-	if (home)
-		return (ft_strjoin(home, "/.42sh_history"));
-	file = getcwd(cwd, sizeof(cwd));
-	return (ft_strjoin(file, "/.42sh_history"));
+	len = 0;
+	if (array)
+	{
+		while (array[len])
+			len++;
+	}
+	return (len);
 }
