@@ -6,26 +6,11 @@
 /*   By: jniemine <jniemine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 16:43:28 by jniemine          #+#    #+#             */
-/*   Updated: 2022/12/14 17:00:54 by jniemine         ###   ########.fr       */
+/*   Updated: 2023/01/24 11:06:55 by jniemine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
-
-t_treenode	*create_command_tree(t_token *tokens, int i_tok, int semicol)
-{
-	int			pipe;
-	t_treenode	*head;
-
-	if (tokens[i_tok].token == SEMICOLON)
-		return (NULL);
-	pipe = foreseer_of_tokens(tokens, PIPE, i_tok, semicol);
-	if (pipe >= 0)
-		head = create_pipe_node(tokens, pipe);
-	else
-		head = parse_right_cmd(tokens, i_tok);
-	return (head);
-}
 
 t_treenode	*init_semicolon(void)
 {
@@ -39,21 +24,76 @@ t_treenode	*init_semicolon(void)
 	return (semicolon);
 }
 
+int	next_semicolon_or_ampersand(t_token *tokens, int i_tok, int end)
+{
+	int			next_semicol;
+	int			next_ampersand;
+
+	next_semicol = foreseer_of_tokens(tokens, SEMICOLON, i_tok, end);
+	next_ampersand = foreseer_of_tokens(tokens, AMPERSAND, i_tok, end);
+	if (next_semicol >= 0)
+	{
+		if (next_ampersand < 0)
+			return (next_semicol);
+		if (next_semicol < next_ampersand)
+			return (next_semicol);
+	}
+	return (next_ampersand);
+}
+
+static int init_values(int next_semi_or_amp,
+		t_token *tokens, int i_tok, t_treenode **semi_or_amp)
+{
+	int	type;
+
+	if (next_semi_or_amp >= 0)
+		type = tokens[next_semi_or_amp].token;
+	else
+		type = tokens[i_tok].token;
+	if (type == AMPERSAND)
+		*semi_or_amp = init_ampersand_node();
+	else
+		*semi_or_amp = init_semicolon();
+	return (type);
+}
+
+/*	<cmd>& buts it in the background,
+	doing <samecmd>& again kills the old and stars a new */
+/* man kill -> SIGCONT, could be answer for vim ctrl+z problem */
 t_treenode	*create_semicolon_node(t_token *tokens, int i_tok, int end)
 {
-	t_treenode	*semicolon;
-	int			next_semicol;
+	t_treenode	*semi_or_amp;
+	int			next_semi_or_amp;
+	int			type;
+	int			delim;
 
 	if (!tokens[i_tok].token)
 		return (NULL);
-	semicolon = init_semicolon();
-	next_semicol = foreseer_of_tokens(tokens, SEMICOLON, i_tok, end);
-	if (next_semicol >= 0)
-		(((t_semicolon *)semicolon)->right) = create_semicolon_node(tokens,
-				next_semicol + 1, end);
+	next_semi_or_amp = next_semicolon_or_ampersand(tokens, i_tok, end);
+	type = init_values(next_semi_or_amp, tokens, i_tok, &semi_or_amp);
+	if (next_semi_or_amp >= 0)
+		delim = next_semi_or_amp;
 	else
-		next_semicol = end;
-	(((t_semicolon *)semicolon)->left) = create_command_tree(tokens,
-			i_tok, next_semicol);
-	return (semicolon);
+		delim = end;
+	if (type == AMPERSAND)
+	{
+		(((t_ampersand *)semi_or_amp)->left) = create_logical_op_tree(tokens,
+				i_tok, delim);
+	}
+	else
+	{
+		(((t_semicolon *)semi_or_amp)->left) = create_logical_op_tree(tokens,
+				i_tok, delim);
+	}
+	//next_semi_or_amp = next_semicolon_or_ampersand(tokens, next_semi_or_amp + 1, end);
+	if (next_semi_or_amp >= 0)
+	{
+		if (type == AMPERSAND)
+			(((t_ampersand *)semi_or_amp)->right) = create_semicolon_node(
+					tokens, next_semi_or_amp + 1, end);
+		else
+			(((t_semicolon *)semi_or_amp)->right) = create_semicolon_node(
+					tokens, next_semi_or_amp + 1, end);
+	}
+	return (semi_or_amp);
 }

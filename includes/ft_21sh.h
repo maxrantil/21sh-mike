@@ -6,7 +6,7 @@
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 09:30:27 by mbarutel          #+#    #+#             */
-/*   Updated: 2023/01/25 14:54:26 by mrantil          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:12:04 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,13 @@
 # include "ft_printf.h"
 # include <sys/stat.h>
 
+
+/* For print_tree */
+# define COUNT 10
+
 # if __linux__
+#  include <signal.h> //FOR LINUX
+#  include <wait.h> //FOR LINUX
 #  include <sys/types.h>
 #  include <sys/wait.h>
 # endif
@@ -29,9 +35,12 @@
 # define REDIR 3
 # define WORD 4
 # define SEMICOLON 5
+# define AMPERSAND 6
 # define AGGREGATION 7
 # define CLOSEFD 8
 # define SKIP_TOK 9
+# define LOGICAL_AND 10
+# define LOGICAL_OR 11
 
 /* For error messages */
 # define SHELL_NAME "21sh"
@@ -76,6 +85,22 @@ typedef struct s_semicolon
 	t_treenode	*left;
 	t_treenode	*right;
 }	t_semicolon;
+
+/*					AMPERSAND NODE			*/
+typedef struct s_ampersand
+{
+	int			type;
+	t_treenode	*left;
+	t_treenode	*right;
+}	t_ampersand;
+
+/*					LOGICAL NODE			*/
+typedef struct s_logicalop
+{
+	int			type;
+	t_treenode	*left;
+	t_treenode	*right;
+}	t_logicalop;
 
 /*					CMD STRUCT				*/
 typedef struct s_cmdnode
@@ -130,6 +155,8 @@ union u_treenode
 	t_pipenode	pipe;
 	t_semicolon	semicolon;
 	t_aggregate	aggregate;
+	t_logicalop	logicalop;
+	t_ampersand	ampersand;
 };
 
 /*				SESSION STRUCT				*/
@@ -173,11 +200,15 @@ void			init_token(char *c, t_token *token, char *line, int cur);
 void			track_used_space(t_token **args, size_t current_pointer_n,
 					size_t *max_pointer_n);
 int				test_if_error(char *str);
-int				redir_error(char *str);
 char			*tok_if_redir(char *line, int *i, int *start, int *end);
+int				redir_error(char *str);
+int				test_if_error(char *str);
+char			*tok_if_logical(char *line, int *i, int *start, int *end);
+void			print_tokens(t_token *tokens);
 int				validate_tokens(t_token *tokens);
 
 /*					TOKENIZER UTILS			*/
+int				is_semi_or_amp(char c);
 void			free_tokens(t_token **tokens);
 int				is_nl(char c);
 int				is_seperator(char c);
@@ -212,6 +243,22 @@ int				error_tok(t_treenode *redir_head,
 					char *msg, char *symbol);
 void			combine_words(t_token *tokens);
 int				test_if_file(char *file);
+t_treenode		*create_command_tree(t_token *tokens, int i_tok, int semicol);
+void			print_tree(t_treenode *head);
+void			print_spaces(int lvl);
+int				is_semicolon_or_ampersand(int token);
+int				is_logicalop(int token);
+t_treenode		*create_logical_op_tree(t_token *tokens,
+					int i_tok, int semicol);
+void			rec_print_tree(t_treenode *root, int lvl);
+void			exec_logicalop(t_logicalop *logicalop, char ***environ_cp,
+					char *terminal, t_session *sesh);
+//t_treenode		*create_ampersand_node(t_token *tokens, int i_tok, int end);
+t_treenode		*init_ampersand_node(void);
+t_treenode		*init_semicolon(void);
+void			print_exec(t_treenode *node);
+void			check_type(t_treenode *root);
+int				next_semicolon_or_ampersand(t_token *tokens, int i_tok, int end);
 
 /*					EXPANSION				*/
 void			ft_expansion(t_session *sesh, char **cmd);

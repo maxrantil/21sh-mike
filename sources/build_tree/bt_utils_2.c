@@ -1,44 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bt_utils_more.c                                    :+:      :+:    :+:   */
+/*   bt_utils_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jniemine <jniemine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/14 16:38:17 by jniemine          #+#    #+#             */
-/*   Updated: 2023/01/12 18:44:40 by jniemine         ###   ########.fr       */
+/*   Created: 2023/01/12 14:19:54 by jniemine          #+#    #+#             */
+/*   Updated: 2023/01/13 13:13:31 by jniemine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int	increment_whitespace(char **line)
+int	is_logicalop(int token)
 {
-	int	i;
-
-	i = 0;
-	while (*line && (*line)[i] && ft_isspace((*line)[i]))
-		++i;
-	*line += i;
-	return (i);
+	return (token == LOGICAL_AND || token == LOGICAL_OR);
 }
 
-int	increment_not_whitespace(char **line)
+int	is_semicolon_or_ampersand(int token)
 {
-	int	i;
-
-	i = 0;
-	while ((*line)[i] && !ft_isspace((*line)[i]))
-		++i;
-	*line += i;
-	return (i);
-}
-
-void	print_spaces(int lvl)
-{
-	int	i;
-
-	i = COUNT;
-	while (i++ < lvl)
-		ft_printf(" ");
+	return (token == SEMICOLON || token == AMPERSAND);
 }

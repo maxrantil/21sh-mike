@@ -1,44 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bt_utils_more.c                                    :+:      :+:    :+:   */
+/*   bt_print_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jniemine <jniemine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/14 16:38:17 by jniemine          #+#    #+#             */
-/*   Updated: 2023/01/12 18:44:40 by jniemine         ###   ########.fr       */
+/*   Created: 2023/01/13 13:32:28 by jniemine          #+#    #+#             */
+/*   Updated: 2023/01/13 13:33:34 by jniemine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int	increment_whitespace(char **line)
+void	print_exec(t_treenode *node)
 {
-	int	i;
+	size_t		len;
+	t_cmdnode	*root;
 
-	i = 0;
-	while (*line && (*line)[i] && ft_isspace((*line)[i]))
-		++i;
-	*line += i;
-	return (i);
-}
-
-int	increment_not_whitespace(char **line)
-{
-	int	i;
-
-	i = 0;
-	while ((*line)[i] && !ft_isspace((*line)[i]))
-		++i;
-	*line += i;
-	return (i);
-}
-
-void	print_spaces(int lvl)
-{
-	int	i;
-
-	i = COUNT;
-	while (i++ < lvl)
-		ft_printf(" ");
+	root = (t_cmdnode *)node;
+	len = ft_arrlen(root->cmd);
+	ft_printf("exec ");
+	if (len > 2)
+		ft_printf("[%s] [1]%s [2]%s [3]%s\n", root->cmd[0], \
+		root->cmd[1], root->cmd[2], root->cmd[3]);
+	else if (len == 2)
+		ft_printf("[%s] %s\n", root->cmd[0], root->cmd[1]);
+	else
+		ft_printf("[%s]\n", root->cmd[0]);
 }

@@ -6,7 +6,7 @@
 /*   By: jniemine <jniemine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 16:21:00 by jniemine          #+#    #+#             */
-/*   Updated: 2023/01/19 14:38:59 by jniemine         ###   ########.fr       */
+/*   Updated: 2023/01/24 14:51:13 by jniemine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_treenode	*parse_left_cmd(t_token *tokens, int i_tok)
 	while (i_tok && tokens[i_tok].token != PIPE
 		&& tokens[i_tok].token != SEMICOLON)
 		--i_tok;
-	if (tokens[i_tok].token == PIPE || tokens[i_tok].token == SEMICOLON)
+	if (tokens[i_tok].token == PIPE || is_semicolon_or_ampersand(tokens[i_tok].token))
 		++i_tok;
 	combine_words(&tokens[i_tok]);
 	return (parse_redirections(tokens, i_tok, cmd));
@@ -63,7 +63,8 @@ t_treenode	*parse_right_cmd(t_token *tokens, int i_tok)
 	cmd = -1;
 	start = i_tok;
 	while (cmd < 0 && tokens[i_tok].value && tokens[i_tok].token != PIPE
-		&& tokens[i_tok].token != SEMICOLON)
+		&& !is_logicalop(tokens[i_tok].token)
+		&& !is_semicolon_or_ampersand(tokens[i_tok].token))
 	{
 		if (tokens[i_tok].token == WORD)
 			cmd = i_tok;
@@ -86,5 +87,6 @@ t_treenode	*build_tree(t_token **tokens)
 		return (NULL);
 	}
 	head = create_semicolon_node(*tokens, 0, calculate_tokens(*tokens));
+//	print_tree(head);
 	return (head);
 }

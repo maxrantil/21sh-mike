@@ -1,44 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bt_utils_more.c                                    :+:      :+:    :+:   */
+/*   bt_create_ampersand_node.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jniemine <jniemine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/14 16:38:17 by jniemine          #+#    #+#             */
-/*   Updated: 2023/01/12 18:44:40 by jniemine         ###   ########.fr       */
+/*   Created: 2023/01/12 23:56:47 by jniemine          #+#    #+#             */
+/*   Updated: 2023/01/13 13:49:32 by jniemine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-int	increment_whitespace(char **line)
+t_treenode	*init_ampersand_node(void)
 {
-	int	i;
+	t_treenode	*ampersand;
 
-	i = 0;
-	while (*line && (*line)[i] && ft_isspace((*line)[i]))
-		++i;
-	*line += i;
-	return (i);
+	ampersand = ft_memalloc(sizeof(t_treenode));
+	ampersand->type = AMPERSAND;
+	((t_ampersand *)ampersand)->type = AMPERSAND;
+	((t_ampersand *)ampersand)->left = NULL;
+	((t_ampersand *)ampersand)->right = NULL;
+	return (ampersand);
 }
 
-int	increment_not_whitespace(char **line)
+/*
+t_treenode *create_ampersand_node(t_token *tokens, int i_tok, int end)
 {
-	int	i;
+	t_treenode *ampersand;
 
-	i = 0;
-	while ((*line)[i] && !ft_isspace((*line)[i]))
-		++i;
-	*line += i;
-	return (i);
+	ampersand = init_ampersand_node();
+
 }
-
-void	print_spaces(int lvl)
-{
-	int	i;
-
-	i = COUNT;
-	while (i++ < lvl)
-		ft_printf(" ");
-}
+*/

@@ -6,9 +6,11 @@
 #    By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/12 06:01:22 by mbarutel          #+#    #+#              #
-#    Updated: 2023/01/25 14:53:14 by mrantil          ###   ########.fr        #
+#    Updated: 2023/01/25 15:10:48 by mrantil          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+
 
 
 #COLORS
@@ -41,13 +43,13 @@ MAKEFLAGS			+= --no-print-directory
 
 NAME				=	21sh
 CC					=	gcc
-CFLAGS 				= 	-Wall -Wextra -Werror
+# CFLAGS 				= 	-Wall -Wextra -Werror
 CFLAGS				+=	-Wunreachable-code -Wtype-limits
 CFLAGS				+=	-Wpedantic
 # CFLAGS				+=	-Wconversion
 CFLAGS				+=	-O3
 
-LEAK_CHECK			= -g
+#LEAK_CHECK			= -g
 #LEAK_CHECK		+=	-fsanitize=address
 
 UNAME				= $(shell uname)
@@ -155,12 +157,15 @@ FILES			= $(KEYBOARD)ft_add_nl_last_row \
 				$(TOKENIZER)init_token \
 				$(TOKENIZER)track_used_space \
 				$(TOKENIZER)free_tokens \
-				$(TOKENIZER)tok_error \
+				$(TOKENIZER)tok_if_logical \
 				$(TOKENIZER)tok_if_redir \
 				$(TOKENIZER)tok_error_after_tokenizing \
+				$(TOKENIZER)tok_errors \
+				$(TOKENIZER)tok_print_tokens \
 				$(BUILDTREE)build_tree \
 				$(BUILDTREE)make_arg_array \
 				$(BUILDTREE)bt_utils \
+				$(BUILDTREE)bt_utils_2 \
 				$(BUILDTREE)bt_utils_more \
 				$(BUILDTREE)bt_create_pipe_node \
 				$(BUILDTREE)bt_create_semicolon_node \
@@ -172,6 +177,12 @@ FILES			= $(KEYBOARD)ft_add_nl_last_row \
 				$(BUILDTREE)bt_error_tok \
 				$(BUILDTREE)bt_get_file \
 				$(BUILDTREE)bt_combine_words \
+				$(BUILDTREE)bt_print_tree \
+				$(BUILDTREE)bt_create_logicalop_tree \
+				$(BUILDTREE)bt_create_command_tree \
+				$(BUILDTREE)bt_create_ampersand_node \
+				$(BUILDTREE)bt_print_exec \
+				$(BUILDTREE)bt_check_type \
 				$(EXECTREE)exe_fail \
 				$(EXECTREE)exec_tree \
 				$(EXECTREE)exec_cmd \
@@ -182,6 +193,7 @@ FILES			= $(KEYBOARD)ft_add_nl_last_row \
 				$(EXECTREE)search_bin \
 				$(EXECTREE)exe_open_fd_if_needed \
 				$(EXECTREE)exe_test_if_file \
+				$(EXECTREE)exe_logicalop \
 				$(EXPANSION)ft_expansion \
 				$(EXPANSION)ft_expansion_utils \
 				$(EXPANSION)ft_expansion_dollar \
