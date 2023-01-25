@@ -6,9 +6,10 @@
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/25 14:53:45 by mrantil          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:39:04 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #ifndef KEYBOARD_H
@@ -19,13 +20,6 @@
 # include <term.h>
 # include <fcntl.h>
 # include <sys/ioctl.h>
-
-# if __linux__
-#  include <curses.h>
-#  include <signal.h>
-#  include <limits.h>
-#  include <ctype.h>
-# endif
 
 # define ENTER      10
 # define CTRL_C		3

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tok_find_argument.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jniemine <jniemine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:13:39 by jakken            #+#    #+#             */
-/*   Updated: 2023/01/24 11:12:24 by jniemine         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:29:21 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,6 @@ static int	operator_len(char *op)
 		return (1);
 	}
 	return (0);
-}
-
-static void	collect_digits(char *line, int *digits, int *end)
-{
-	while (ft_isdigit(line[*end - *digits]))
-		++(*digits);
-	if (*end - (*digits) == 0 || ft_isspace(line[*end - (*digits)]))
-		*end -= (*digits);
 }
 
 static char	*if_redir_or_logical(char *line, int *i, int *start, int *end)

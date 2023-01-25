@@ -6,7 +6,7 @@
 #    By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/12 06:01:22 by mbarutel          #+#    #+#              #
-#    Updated: 2023/01/25 15:10:48 by mrantil          ###   ########.fr        #
+#    Updated: 2023/01/25 15:37:40 by mrantil          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,18 +43,19 @@ MAKEFLAGS			+= --no-print-directory
 
 NAME				=	21sh
 CC					=	gcc
-# CFLAGS 				= 	-Wall -Wextra -Werror
+CFLAGS 				= 	-Wall -Wextra -Werror
 CFLAGS				+=	-Wunreachable-code -Wtype-limits
 CFLAGS				+=	-Wpedantic
 # CFLAGS				+=	-Wconversion
 CFLAGS				+=	-O3
 
-#LEAK_CHECK			= -g
+LEAK_CHECK			= -g
 #LEAK_CHECK		+=	-fsanitize=address
 
 UNAME				= $(shell uname)
 ifeq ($(UNAME), Darwin)
 TERMCAP				=	-ltermcap
+CFLAGS 			+= -Werror
 endif
 ifeq ($(UNAME), Linux)
 TERMCAP				=	-ltermcap
@@ -82,6 +83,8 @@ TERMIOS			= 	termios/
 TOKENIZER		=	tokenizer/
 UTILITIES		=	utilities/
 FC				= 	fc/
+INTERN_VARS		=	intern_variables/
+PARAM_FORM		=	parameter_formatting/
 
 SOURCE_COUNT = $(words $(FILES))
 
@@ -206,10 +209,10 @@ FILES			= $(KEYBOARD)ft_add_nl_last_row \
 				$(BUILTIN)ft_builtins \
 				$(BUILTIN)ft_cd \
 				$(BUILTIN)ft_echo \
-				$(BUILTIN)ft_env \
+				$(BUILTIN)ft_set \
 				$(BUILTIN)ft_exit \
-				$(BUILTIN)ft_setenv \
-				$(BUILTIN)ft_unsetenv \
+				$(BUILTIN)ft_export \
+				$(BUILTIN)ft_unset \
 				$(BUILTIN_UTILS)ft_cd_addr_check \
 				$(BUILTIN_UTILS)ft_dir_change \
 				$(BUILTIN_UTILS)ft_env_append \
@@ -231,6 +234,10 @@ FILES			= $(KEYBOARD)ft_add_nl_last_row \
 				$(FC)fc_print_error \
 				$(FC)fc_check_flags \
 				$(FC)fc_overwrite_fc_cmd_with_prev_cmd \
+				$(INTERN_VARS)ft_variables \
+				$(INTERN_VARS)add_var \
+				$(INTERN_VARS)ft_var_get \
+				$(PARAM_FORM)parameter_format \
 
 H_PATHS 	= 	$(addsuffix .h, $(addprefix $(INCLUDES)/, $(H_FILES)))
 O_PATHS		=	$(addsuffix .o, $(addprefix $(OBJECTS)/,$(FILES)))
@@ -265,6 +272,8 @@ $(OBJECTS):
 	@mkdir -p $(OBJECTS)/$(HISTORY)
 	@mkdir -p $(OBJECTS)/$(SIGNALS)
 	@mkdir -p $(OBJECTS)/$(FC)
+	@mkdir -p $(OBJECTS)/$(INTERN_VARS)
+	@mkdir -p $(OBJECTS)/$(PARAM_FORM)
 	@printf "$(GREEN)_________________________________________________________________\n$(RESET)"
 	@printf "$(NAME): $(GREEN)$(OBJECTS) directory was created.$(RESET)\n\n\n"
 

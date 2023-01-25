@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_session_init.c                                  :+:      :+:    :+:   */
+/*   ft_variables.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/22 16:44:03 by mbarutel          #+#    #+#             */
-/*   Updated: 2023/01/25 15:20:09 by mrantil          ###   ########.fr       */
+/*   Created: 2023/01/16 11:54:26 by mviinika          #+#    #+#             */
+/*   Updated: 2023/01/25 15:31:56 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_21sh.h"
 
-t_session	*g_session;
-t_term		*g_t;
-
-/**
- * It initializes the session struct.
- *
- * @param sesh The session struct.
- */
-void	ft_session_init(t_session *sesh)
+int is_var(char *cmd)
 {
-	init_window_size(sesh->term);
-	g_session = sesh;
-	g_t = sesh->term;
-	sesh->exit_stat = 0;
-	sesh->line = NULL;
-	ft_env_init(sesh);
-	sesh->terminal = ttyname(STDOUT_FILENO);
-	sesh->head = NULL;
-	sesh->tmp_env_key = NULL;
-	sesh->tokens = NULL;
+	return ((ft_strchr(cmd, '=') && ft_isalpha(cmd[0]))
+		|| (ft_strchr(cmd, '=') && !ft_isalpha(cmd[0]) && cmd[0] == '_'));
+}
+
+int ft_variables(t_session *sesh, char ***cmd)
+{
+	int ret;
+	int	i;
+
+	i = 0;
+	ret = 0;
+	if (is_var(**cmd))
+	{
+		ret = add_var(sesh, *cmd);
+		while(sesh->intr_vars[i])
+			ft_printf("intern var %s %c\n", sesh->intr_vars[i++], **cmd[0]);
+	}
+	ft_printf("%d\n", ret);
+	return (ret);
 }

@@ -14,9 +14,9 @@
 
 /**
  * It counts the number of special characters in a string
- * 
+ *
  * @param str The string to be split.
- * 
+ *
  * @return The number of special characters in the string.
  */
 static int	ft_special_ch_split_len(char *str)
@@ -37,9 +37,9 @@ static int	ft_special_ch_split_len(char *str)
 /**
  * It splits a string intovan array of strings, where each string is a word, and
  * a word is defined as a sequence of characters that are not special characters
- * 
+ *
  * @param str the string to be split
- * 
+ *
  * @return A pointer to a pointer to a char.
  */
 static char	**ft_special_ch_split(char *str)
@@ -66,9 +66,9 @@ static char	**ft_special_ch_split(char *str)
 }
 
 /**
- * It takes a string, finds the first instance of a dollar sign, and replaces 
+ * It takes a string, finds the first instance of a dollar sign, and replaces
  * it with the value of the environment variable that follows the dollar sign
- * 
+ *
  * @param sesh the session struct
  * @param buff the buffer to write to
  * @param arg the string to be parsed
@@ -97,9 +97,9 @@ static char	*ft_find_env(t_session *sesh, char *arg)
 }
 
 /**
- * It takes a string, splits it on the '$' character, and then catinates the 
+ * It takes a string, splits it on the '$' character, and then catinates the
  * expansion of the split strings.
- * 
+ *
  * @param sesh the session struct
  * @param split_dollar This is the string that is being split by the dollar sign.
  * @param buff This is the buffer that will be returned.
@@ -133,10 +133,10 @@ static void	catinate_expansion(t_session *sesh, char **splits, char **buff)
 /**
  * It takes a string, splits it on special characters, and then replaces any
  * dollar signs with the value of the environment variable that follows it.
- * 
+ *
  * @param sesh the session struct
  * @param str the string to be expanded
- * 
+ *
  * @return A string
  */
 char	*ft_expansion_dollar(t_session *sesh, char *str)
