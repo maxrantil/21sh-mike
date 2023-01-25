@@ -6,7 +6,7 @@
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 09:41:05 by mrantil           #+#    #+#             */
-/*   Updated: 2023/01/25 12:57:14 by mrantil          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:05:33 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ static int	no_flag_or_e_flag(t_session *sesh, t_fc *fc, char ***cmd)
 	new = ft_strtrim(fc->ret_cmd); //do we need to implement heredoc aswell here?
 	ft_freeda((void ***)&fc->filename, calc_chptr(fc->filename));
 	tokens = chop_line(new, tokens, 1);
-	head = build_tree(tokens);
+	head = build_tree(&tokens);
 	if (head && ((t_semicolon *)head)->left)
 		exec_tree(head, &sesh->env, sesh->terminal, sesh);
 	free_node(head);

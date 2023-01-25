@@ -6,14 +6,14 @@
 /*   By: mrantil <mrantil@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/25 15:12:47 by mrantil          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:17:02 by mrantil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "ft_21sh.h"
 
-static void	free_rest(t_treenode *head)
+/* static void	free_rest(t_treenode *head)
 {
 	if (head->type == CMD)
 	{
@@ -40,9 +40,9 @@ static void	free_rest(t_treenode *head)
 		((t_semicolon *)head)->right = NULL;
 	}
 	ft_memdel((void **)&head);
-}
+} */
 
-void	free_node(t_treenode *head)
+/* void	free_node(t_treenode *head)
 {
 	if (!head)
 		return ;
@@ -68,7 +68,7 @@ void	free_node(t_treenode *head)
 		((t_logicalop *)head)->right = NULL;
 	}
 	free_rest(head);
-}
+} */
 
 void	exec_tree(t_treenode *head, char ***environ_cp,
 				char *terminal, t_session *sesh)
@@ -92,7 +92,7 @@ void	exec_tree(t_treenode *head, char ***environ_cp,
 	else if (head->type == CLOSEFD)
 		exec_closefd((t_closefd *)head, environ_cp, terminal, sesh);
 	else if (head->type == CMD)
-		execute_bin(((t_cmdnode *)head)->cmd, environ_cp, sesh);
+		execute_bin(&((t_cmdnode *)head)->cmd, environ_cp, sesh);
 	else if (head->type == LOGICAL_AND || head->type == LOGICAL_OR)
 		exec_logicalop(((t_logicalop *)head), environ_cp, terminal, sesh);
 	else if (head->type == AMPERSAND)
